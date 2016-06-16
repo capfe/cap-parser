@@ -1,6 +1,6 @@
 # cap-parser
 
-parser for CAP
+Parser for CAP
 
 Test
 ---
