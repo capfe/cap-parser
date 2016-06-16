@@ -77,84 +77,84 @@ export default {
 
             // 不透明值
             opacity: {
-                fx: 'liner',
+                fx: 'linear',
                 value: 20
             },
 
             position: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 200.00
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 300.00
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 300.00
                 }
             },
             scale: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 2 // 放大2倍, 0.5为缩小2倍
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 0.5
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 0.5
                 }
             },
 
             zIndex: {
-                fx: 'liner',
+                fx: 'linear',
                 value: 100
             },
 
             rotate: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30.01
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30.78
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30.80
                 }
             },
 
             skew: {
                 x:{
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30.90
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30.89
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30.72
                 }
             },
 
             color: {
-                fx: 'liner',
+                fx: 'linear',
                 value: '#fff'
             },
 
@@ -175,83 +175,83 @@ export default {
             parentid: 1,
             children: [3],
             opacity: {
-                fx: 'liner',
+                fx: 'linear',
                 value: 20
             },
             position: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 200
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 300
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 300
                 }
             },
             scale: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 2 // 放大2倍, 0.5为缩小2倍
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 0.5
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 0.5
                 }
             },
 
             zIndex: {
-                fx: 'liner',
+                fx: 'linear',
                 value: 100
             },
 
             rotate: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 }
             },
 
             skew: {
                 x:{
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 }
             },
 
             color: {
-                fx: 'liner',
+                fx: 'linear',
                 value: '#fff'
             }
         },
@@ -269,83 +269,83 @@ export default {
             layerColor: '#529862',
             parentid: 2,
             opacity: {
-                fx: 'liner',
+                fx: 'linear',
                 value: 20
             },
             position: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 200
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 300
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 300
                 }
             },
             scale: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 2 // 放大2倍, 0.5为缩小2倍
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 0.5
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 0.5
                 }
             },
 
             zIndex: {
-                fx: 'liner',
+                fx: 'linear',
                 value: 100
             },
 
             rotate: {
                 x: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 }
             },
 
             skew: {
                 x:{
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 },
 
                 y: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 },
 
                 z: {
-                    fx: 'liner',
+                    fx: 'linear',
                     value: 30
                 }
             },
 
             color: {
-                fx: 'liner',
+                fx: 'linear',
                 value: '#fff'
             }
         }
@@ -360,26 +360,26 @@ export default {
                     position: {
                         x: {
                             value: 213,
-                            fx: 'liner'
+                            fx: 'linear'
                         },
                         y: {
                             value: 340,
-                            fx: 'liner'
+                            fx: 'linear'
                         }
                     },
                     scale: {
                         x: {
                             value: 2,
-                            fx: 'liner'
+                            fx: 'linear'
                         },
                         y: {
                             value: 1,
-                            fx: 'liner'
+                            fx: 'linear'
                         }
                     },
                     opacity: {
                         value: 30,
-                        fx: 'liner'
+                        fx: 'linear'
                     }
                 }
             ]
@@ -392,11 +392,11 @@ export default {
                     scale: {
                         x: {
                             value: 2,
-                            fx: 'liner'
+                            fx: 'linear'
                         },
                         y: {
                             value: 1,
-                            fx: 'liner'
+                            fx: 'linear'
                         }
                     }
                 }
@@ -410,11 +410,11 @@ export default {
                     scale: {
                         x: {
                             value: 2,
-                            fx: 'liner'
+                            fx: 'linear'
                         },
                         y: {
                             value: 1,
-                            fx: 'liner'
+                            fx: 'linear'
                         }
                     }
                 }
