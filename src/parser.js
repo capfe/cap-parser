@@ -3,10 +3,6 @@
  * @author ielgnaw(wuji0223@gmail.com)
  */
 
-import debugMod from 'debug';
-import safeStringify from 'json-stringify-safe';
-import mockData from './mock-data';
-
 // ((t) => {
 //     if (t === 1) {
 //         console.warn(1);
@@ -16,11 +12,25 @@ import mockData from './mock-data';
 //     }
 // })()
 
-export function test() {
-    return 1;
-}
+// export function test() {
+//     return 1;
+// }
 
-export function parse() {
-    const debug = debugMod('cap-parser');
-    debug(safeStringify(mockData, null, 4));
+// export function parse() {
+//     const debug = debugMod('cap-parser');
+//     debug(safeStringify(mockData, null, 4));
+//     console.warn(layers);
+// }
+
+export default class Parser {
+    constructor(data = {}) {
+        // const {layers, keyframes} = data;
+        // console.warn(layers, keyframes);
+        this.layers = data.layers;
+        this.keyframes = data.keyframes;
+    }
+
+    aa() {
+        console.warn(123);
+    }
 }
