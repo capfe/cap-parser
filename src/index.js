@@ -9,14 +9,16 @@ import safeStringify from 'json-stringify-safe';
 import mockData from './mock-data';
 import Parser from './Parser';
 
-// console.warn(parser, 1);
-// console.warn(parser.test(), 'aqq');
-// console.log(parser.parse());
-
-console.warn(Parser);
 
 let parser = new Parser(mockData);
 
+// test
+// 0 - end
+parser.parse();
 
-console.warn(parser);
-console.warn(parser.aa);
+// 4 - end
+// parser.parse(4);
+
+// 8 - 13
+// parser.parse(8, 15);
+

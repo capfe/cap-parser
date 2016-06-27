@@ -156,8 +156,7 @@ export default {
             color: {
                 fx: 'linear',
                 value: '#fff'
-            },
-
+            }
             // 可能还有一堆css属性。。
         },
         {
@@ -210,12 +209,10 @@ export default {
                     value: 0.5
                 }
             },
-
             zIndex: {
                 fx: 'linear',
                 value: 100
             },
-
             rotate: {
                 x: {
                     fx: 'linear',
@@ -232,7 +229,6 @@ export default {
                     value: 30
                 }
             },
-
             skew: {
                 x:{
                     fx: 'linear',
@@ -249,7 +245,6 @@ export default {
                     value: 30
                 }
             },
-
             color: {
                 fx: 'linear',
                 value: '#fff'
@@ -304,12 +299,10 @@ export default {
                     value: 0.5
                 }
             },
-
             zIndex: {
                 fx: 'linear',
                 value: 100
             },
-
             rotate: {
                 x: {
                     fx: 'linear',
@@ -326,7 +319,6 @@ export default {
                     value: 30
                 }
             },
-
             skew: {
                 x:{
                     fx: 'linear',
@@ -343,7 +335,6 @@ export default {
                     value: 30
                 }
             },
-
             color: {
                 fx: 'linear',
                 value: '#fff'
@@ -385,7 +376,7 @@ export default {
             ]
         },
         {
-            index: 11,
+            index: 7,
             layers: [
                 {
                     id: 1,
@@ -403,7 +394,25 @@ export default {
             ]
         },
         {
-            index: 21,
+            index: 12,
+            layers: [
+                {
+                    id: 1,
+                    scale: {
+                        x: {
+                            value: 2,
+                            fx: 'linear'
+                        },
+                        y: {
+                            value: 1,
+                            fx: 'linear'
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            index: 19,
             layers: [
                 {
                     id: 1,
