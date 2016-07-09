@@ -4,30 +4,11 @@
  * @author ielgnaw(wuji0223@gmail.com)
  */
 
-// ((t) => {
-//     if (t === 1) {
-//         console.warn(1);
-//     }
-//     else {
-//         console.warn('nooo');
-//     }
-// })()
-
-// export function test() {
-//     return 1;
-// }
-
-// export function parse() {
-//     const debug = debugMod('cap-parser');
-//     debug(safeStringify(mockData, null, 4));
-//     console.warn(layers);
-// }
-
+import safeStringify from 'json-stringify-safe';
 import debugMod from 'debug';
 
 const debug = debugMod('cap-parser');
 const abs = Math.abs;
-
 
 /**
  * 找到 data.keyframes 中最大和最小的 index 对应 keyframe
@@ -35,8 +16,10 @@ const abs = Math.abs;
  * @param {Array} keyframes 待查找的目标数组
  *
  * @type {Object} 包含最大和细小 index 以及最大最小 index 对应的 keyframe 对象以及所有的 index 集合的对象
+ *                同时还包括一个对象，index 即 帧数为 key，对应的 keyframe 里的 layers 为 value
+ *
  */
-const findBoundaryIndex = (keyframes) => {
+const getBoundaryKeyframe = (keyframes) => {
     // data.keyframes 中的最小索引
     let minIndex = Number.MAX_VALUE;
 
@@ -48,12 +31,14 @@ const findBoundaryIndex = (keyframes) => {
         maxIndex: -1,
         minKeyframe: null,
         maxKeyframe: null,
-        allIndex: []
+        allIndex: [],
+        keyframeMap: {}
     };
 
     keyframes.forEach((keyframe) => {
         let i = keyframe.index;
         ret.allIndex.push(i);
+        ret.keyframeMap[i] = keyframe.layers;
         if (i <= minIndex) {
             minIndex = i;
             ret.minIndex = i;
@@ -76,10 +61,52 @@ export default class Parser {
         this.keyframes = data.keyframes;
         this.keyframesLen = data.keyframes.length;
 
-        findBoundaryIndex(this.keyframes);
+        this.boundaryData = getBoundaryKeyframe(this.keyframes);
 
         // 关键帧中的 layers，并不是所有的，而是根据传入的 start 和 end 确定的
         this.layersInKeyframes = [];
+    }
+
+    /**
+     * 根据指定的帧数即 data.keyframes[keyframe].index 这个值来获取对应的 keyframe 的 layers
+     * 另外，要把 index 从 0 到最后的值都包括在内，数据中没有的帧数需要算出来
+     * 1. index <= this.boundaryData.minIndex 那么返回的就是 minIndex 对应的那个 keyframe 的 layers
+     * 2. index >= this.boundaryData.maxIndex 那么返回的就是 maxIndex 对应的那个 keyframe 的 layers
+     * 3. this.boundaryData.minIndex < index < this.boundaryData.maxIndex
+     *     那么返回 computed(this.boundaryData.minIndex, this.boundaryData.maxIndex, this.boundaryData.minIndex.fx)
+     *
+     * @example
+     *     已知：
+     *     data.totalFrame = 5;
+     *     data.keyframes = [{index: 1, layers: [...]}, {index: 3, layers: [...]}]
+     *     这种情况下，所有的帧数据如下
+     *     data.keyframes = [
+     *         {index: 0, layers: [...]}, 同 index 1
+     *         {index: 1, layers: [...]},
+     *         {index: 2, layers: [...]}, 根据 index1 的 fx 计算得到
+     *         {index: 3, layers: [...]},
+     *         {index: 4, layers: [...]}, 根据 index3 的 fx 计算得到
+     *     ]
+     */
+    getLayersByKeyframe(index) {
+        return this.boundaryData.keyframeMap[index];
+    }
+
+    /**
+     * 分析当前的状态
+     * 本质上状态只分为三种，
+     * 1. 小于等于最左
+     * 2. 大于等于最后
+     * 3. 中间
+     *
+     * @param {number} n 传入的 start 或者 end
+     *
+     * @return {number} 状态值
+     */
+    analyzeState(n) {
+        let state = -2;
+
+        return state;
     }
 
     // 只传入 start 的情况
@@ -91,8 +118,12 @@ export default class Parser {
     // index1 | index2 | start | index3  => start = computed(index2, index3, index2.fx), end = index3
     // index1 | index2 | start >= index3  => start = index3, end = index3
     parse(start) {
-
+        // console.warn(this.boundaryData);
     }
+
+
+
+
 
 
     // 1. 传一个关键帧数，那么从这个帧数开始然后到最后

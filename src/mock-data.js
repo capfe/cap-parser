@@ -10,7 +10,7 @@ export default {
     fps: 60,
 
     // 总帧数
-    totalFrame: 200,
+    totalFrame: 20,
 
     // 当前帧所在索引
     frameIndex: 0,
@@ -412,7 +412,7 @@ export default {
             ]
         },
         {
-            index: 19,
+            index: 16,
             layers: [
                 {
                     id: 1,

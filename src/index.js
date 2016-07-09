@@ -16,6 +16,8 @@ let parser = new Parser(mockData);
 // 0 - end
 parser.parse();
 
+console.warn(safeStringify(parser.getLayersByKeyframe(2), null, 4));
+
 // 4 - end
 // parser.parse(4);
 
