@@ -9,6 +9,7 @@ import safeStringify from 'json-stringify-safe';
 import mockData from './mock-data';
 import Parser from './Parser';
 
+const debug = debugMod('cap-parser');
 
 let parser = new Parser(mockData);
 
@@ -16,7 +17,13 @@ let parser = new Parser(mockData);
 // 0 - end
 parser.parse();
 
-console.warn(safeStringify(parser.getLayersByKeyframe(2), null, 4));
+
+// debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(0), null, 4)}`);
+// debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(1), null, 4)}`);
+// debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(2), null, 4)}`);
+
+// debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(16), null, 4)}`);
+// debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(17), null, 4)}`);
 
 // 4 - end
 // parser.parse(4);

@@ -347,7 +347,7 @@ export default {
             index: 2,
             layers: [
                 {
-                    id: 1,
+                    id: 2,
                     position: {
                         x: {
                             value: 213,
@@ -379,7 +379,7 @@ export default {
             index: 7,
             layers: [
                 {
-                    id: 1,
+                    id: 7,
                     scale: {
                         x: {
                             value: 2,
@@ -397,7 +397,7 @@ export default {
             index: 12,
             layers: [
                 {
-                    id: 1,
+                    id: 12,
                     scale: {
                         x: {
                             value: 2,
@@ -415,7 +415,7 @@ export default {
             index: 16,
             layers: [
                 {
-                    id: 1,
+                    id: 16,
                     scale: {
                         x: {
                             value: 2,

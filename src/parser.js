@@ -64,7 +64,7 @@ export default class Parser {
         this.boundaryData = getBoundaryKeyframe(this.keyframes);
 
         // 关键帧中的 layers，并不是所有的，而是根据传入的 start 和 end 确定的
-        this.layersInKeyframes = [];
+        // this.layersInKeyframes = [];
     }
 
     /**
@@ -89,6 +89,32 @@ export default class Parser {
      *     ]
      */
     getLayersByKeyframe(index) {
+        const bData = this.boundaryData;
+        const map = bData.keyframeMap;
+        // 如果传入的 index 在 keyframes 中的 index 正好存在，那么直接返回
+        if (map[index]) {
+            return map[index];
+        }
+
+        console.warn(bData);
+
+        const minIndex = bData.minIndex;
+
+        // index < minIndex，直接返回 minIndex 对应的那个 keyframe 的 layers
+        if (index < minIndex) {
+            return map[minIndex];
+        }
+
+        const maxIndex = bData.maxIndex;
+
+        // index > maxIndex，直接返回 maxIndex，直接返回 对应的那个 keyframe 的 layers
+        if (index > maxIndex) {
+            return map[maxIndex];
+        }
+
+
+
+
         return this.boundaryData.keyframeMap[index];
     }
 
