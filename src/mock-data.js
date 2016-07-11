@@ -344,7 +344,7 @@ export default {
 
     keyframes: [
         {
-            index: 2,
+            index: 12,
             layers: [
                 {
                     id: 2,
@@ -376,10 +376,10 @@ export default {
             ]
         },
         {
-            index: 7,
+            index: 4,
             layers: [
                 {
-                    id: 7,
+                    id: 2,
                     scale: {
                         x: {
                             value: 2,
@@ -394,7 +394,7 @@ export default {
             ]
         },
         {
-            index: 12,
+            index: 1,
             layers: [
                 {
                     id: 12,
@@ -412,7 +412,7 @@ export default {
             ]
         },
         {
-            index: 16,
+            index: 7,
             layers: [
                 {
                     id: 16,
