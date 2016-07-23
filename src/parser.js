@@ -9,7 +9,6 @@ import extend from 'node.extend';
 import debugMod from 'debug';
 
 const debug = debugMod('cap-parser');
-const abs = Math.abs;
 
 /**
  * 找到 data.keyframes 中最大和最小的 index 对应 keyframe
@@ -26,7 +25,7 @@ const getBoundaryKeyframe = (keyframes) => {
     // data.keyframes 中的最大索引
     let maxIndex = Number.MIN_VALUE;
 
-    let ret = {
+    const ret = {
         minIndex: -1,
         maxIndex: -1,
         minKeyframe: null,
@@ -36,8 +35,8 @@ const getBoundaryKeyframe = (keyframes) => {
         keyframeMap: {}
     };
 
-    for (let [index, keyframe] of keyframes.entries()) {
-        let i = keyframe.index;
+    for (const [index, keyframe] of keyframes.entries()) {
+        const i = keyframe.index;
         ret.allKeyframeIndex.push(i);
         ret.keyframeMap[i] = keyframe.layers;
         if (i <= minIndex) {
@@ -65,25 +64,25 @@ const getBoundaryKeyframe = (keyframes) => {
  * @return {Array.<number>} 结果数组，第 0 个元素是 num 前面的项，第 1 个元素是 num 后面的项，第 2 个元素是前后两个索引的差值
  */
 const getAroundData = (index, arr) => {
-    let ret = [];
+    const ret = [];
 
     // 为找到 index 前面最临近的项而设置的差值最小值
-    let edgeForLess = {
+    const edgeForLess = {
         ret: -1,
         val: Number.MAX_VALUE
     };
 
     // 为找到 index 后面最临近的项而设置的差值最小值
-    let edgeForMore = {
+    const edgeForMore = {
         ret: -1,
         val: Number.MAX_VALUE
     };
 
     // 不存在相等的情况，在调用 getAroundData 方法之前已经处理了相等的情况
-    for (let [i, n] of arr.entries()) {
+    for (const [i, n] of arr.entries()) {
         // 小于的情况找的是 index 的前面最近邻的项
         if (n < index) {
-            let sub = index - n;
+            const sub = index - n;
             if (sub < edgeForLess.val) {
                 edgeForLess.val = sub;
                 edgeForLess.ret = n;
@@ -92,7 +91,7 @@ const getAroundData = (index, arr) => {
 
         // 大于的情况找的是 index 的后面最近邻的项
         if (n > index) {
-            let sub = n - index;
+            const sub = n - index;
             if (sub < edgeForMore.val) {
                 edgeForMore.val = sub;
                 edgeForMore.ret = n;
@@ -168,42 +167,49 @@ export default class Parser {
 
         // 1. 找出 index 的前一关键帧和后一关键帧的 index
         const aroundIndex = getAroundData(index, bData.allKeyframeIndex);
-        // console.warn(aroundIndex, bData);
-        // console.warn(map[aroundIndex[0]], 'before');
-        // console.warn(map[aroundIndex[1]], 'after');
 
         // 2. 根据 aroundIndex 以及 aroundIndex[0] 的 fx 计算出当前 index 对应的 layers 的值，最终要拿默认值做 merge，需要返回全值
-        // (后面的值 - 前面的值) / 差值
-
         // 先找到 aroundIndex[0] 的 layers 里面有哪些 layer，看看这些 layer 在 aroundIndex[1] 的 layers 里是否存在
         // 如果不存在，那么直接返回 aroundIndex[0] 的 layers 里的这个 layer 的值（和默认值 merge 后）
+        // 如果存在，那么需要根据 aroundIndex[1] 和 aroundIndex[0] 的 layer 的值以及 aroundIndex[0] 的 fx 来计算出
+        // 当前 index 对应的 layers 的值并且最后要和默认值做 merge
+        // (后面的值 - 前面的值) / 差值
+        // (aroundIndex[1].layers.layer.properties - aroundIndex[0].layers.layer.properties) / aroundIndex[3]
 
         const beforeLayers = map[aroundIndex[0]];
         const afterLayers = map[aroundIndex[1]];
 
-        let layerIdsInAfterLayers = {};
-        for (let afterLayer of afterLayers) {
+        const layerIdsInAfterLayers = {};
+        for (const afterLayer of afterLayers) {
             layerIdsInAfterLayers[afterLayer.id] = afterLayer;
         }
 
-        let ret = {
+        const ret = {
             index: index,
             layers: [],
             // 先把结果缓存在 map 中，便于之后和 originalLayer merge
             layersMap: {}
         };
 
-        for (let beforeLayer of beforeLayers) {
+        for (const beforeLayer of beforeLayers) {
             // 如果 afterLayer 中存在，但是 beforeLayer 中不存在，那么直接返回 beforeLayer 的数据
             if (!layerIdsInAfterLayers[beforeLayer.id]) {
-                // ret.layers.push(beforeLayer);
                 ret.layersMap[beforeLayer.id] = beforeLayer;
+            }
+
+            // afterLayer 和 beforeLayer 中都存在，那么根据 beforeLayer 和 afterLayer 对应的属性以及 beforeLayer 属性的 fx 来计算
+            else {
+                console.warn(beforeLayer);
+                console.warn(layerIdsInAfterLayers[beforeLayer.id]);
+                console.warn();
             }
         }
 
-        for (let originalLayer of originalLayers) {
+
+        // 和默认值做 merge
+        for (const originalLayer of originalLayers) {
             if (ret.layersMap[originalLayer.id]) {
-                ret.layers.push(extend(true, {}, originalLayer, ret.layersMap[originalLayer.id]))
+                ret.layers.push(extend(true, {}, originalLayer, ret.layersMap[originalLayer.id]));
             }
         }
 

@@ -389,6 +389,10 @@ export default {
                             value: 1,
                             fx: 'linear'
                         }
+                    },
+                    zIndex: {
+                        fx: 'linear',
+                        value: 3
                     }
                 }
             ]
@@ -410,16 +414,20 @@ export default {
                     }
                 },
                 {
-                    id: 7,
+                    id: 4,
                     scale: {
                         x: {
-                            value: 77777,
+                            value: 2,
                             fx: 'linear'
                         },
                         y: {
-                            value: 77777,
+                            value: 1,
                             fx: 'linear'
                         }
+                    },
+                    opacity: {
+                        fx: 'linear',
+                        value: 50
                     }
                 }
             ]
