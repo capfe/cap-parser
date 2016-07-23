@@ -30,15 +30,15 @@ parser.parse();
 // debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(7000), null, 4)}`);
 
 parser.getLayersByKeyframe(2);
-parser.getLayersByKeyframe(3);
+// parser.getLayersByKeyframe(3);
 
-parser.getLayersByKeyframe(5);
-parser.getLayersByKeyframe(6);
+// parser.getLayersByKeyframe(5);
+// parser.getLayersByKeyframe(6);
 
-parser.getLayersByKeyframe(8);
-parser.getLayersByKeyframe(9);
-parser.getLayersByKeyframe(10);
-parser.getLayersByKeyframe(11);
+// parser.getLayersByKeyframe(8);
+// parser.getLayersByKeyframe(9);
+// parser.getLayersByKeyframe(10);
+// parser.getLayersByKeyframe(11);
 
 // debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(16), null, 4)}`);
 // debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(17), null, 4)}`);

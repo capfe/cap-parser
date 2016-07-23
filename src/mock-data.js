@@ -46,7 +46,7 @@ export default {
     layers: [
         {
             id: 1,
-            name: '图层11',
+            name: '图层1',
             classname: 'test-layer-class1',
 
             // 状态集合（随数据读写管理）
@@ -100,17 +100,17 @@ export default {
             scale: {
                 x: {
                     fx: 'linear',
-                    value: 2 // 放大2倍, 0.5为缩小2倍
+                    value: 10 // 放大2倍, 0.5为缩小2倍
                 },
 
                 y: {
                     fx: 'linear',
-                    value: 0.5
+                    value: 10
                 },
 
                 z: {
                     fx: 'linear',
-                    value: 0.5
+                    value: 10
                 }
             },
 
@@ -160,9 +160,9 @@ export default {
             // 可能还有一堆css属性。。
         },
         {
-            id: 2,
-            name: '图层12',
-            classname: 'test-layer-class2',
+            id: 4,
+            name: '图层4',
+            classname: 'test-layer-class4',
             layerColor: '#567488',
             status: {
                 view: true,
@@ -251,9 +251,9 @@ export default {
             }
         },
         {
-            id: 3,
-            name: '图层13',
-            classname: 'test-layer-class3',
+            id: 7,
+            name: '图层',
+            classname: 'test-layer-class7',
             status: {
                 view: true,
                 dview: false,
@@ -347,7 +347,7 @@ export default {
             index: 12,
             layers: [
                 {
-                    id: 2,
+                    id: 12,
                     position: {
                         x: {
                             value: 213,
@@ -379,10 +379,10 @@ export default {
             index: 4,
             layers: [
                 {
-                    id: 2,
+                    id: 4,
                     scale: {
                         x: {
-                            value: 2,
+                            value: 5,
                             fx: 'linear'
                         },
                         y: {
@@ -397,7 +397,7 @@ export default {
             index: 1,
             layers: [
                 {
-                    id: 12,
+                    id: 1,
                     scale: {
                         x: {
                             value: 2,
@@ -408,6 +408,19 @@ export default {
                             fx: 'linear'
                         }
                     }
+                },
+                {
+                    id: 7,
+                    scale: {
+                        x: {
+                            value: 77777,
+                            fx: 'linear'
+                        },
+                        y: {
+                            value: 77777,
+                            fx: 'linear'
+                        }
+                    }
                 }
             ]
         },
@@ -415,7 +428,7 @@ export default {
             index: 7,
             layers: [
                 {
-                    id: 16,
+                    id: 7,
                     scale: {
                         x: {
                             value: 2,

@@ -5,6 +5,7 @@
  */
 
 import safeStringify from 'json-stringify-safe';
+import extend from 'node.extend';
 import debugMod from 'debug';
 
 const debug = debugMod('cap-parser');
@@ -16,8 +17,7 @@ const abs = Math.abs;
  * @param {Array} keyframes 待查找的目标数组
  *
  * @return {Object} 包含最大和细小 index 以及最大最小 index 对应的 keyframe 对象以及所有的 index 集合的对象
- *                同时还包括一个对象，index 即 帧数为 key，对应的 keyframe 里的 layers 为 value
- *
+ *                同时还包括一个对象，index 即帧数为 key，对应的 keyframe 里的 layers 为 value
  */
 const getBoundaryKeyframe = (keyframes) => {
     // data.keyframes 中的最小索引
@@ -36,7 +36,7 @@ const getBoundaryKeyframe = (keyframes) => {
         keyframeMap: {}
     };
 
-    keyframes.forEach((keyframe) => {
+    for (let [index, keyframe] of keyframes.entries()) {
         let i = keyframe.index;
         ret.allKeyframeIndex.push(i);
         ret.keyframeMap[i] = keyframe.layers;
@@ -51,7 +51,7 @@ const getBoundaryKeyframe = (keyframes) => {
             ret.maxIndex = i;
             ret.maxKeyframe = keyframe;
         }
-    });
+    }
 
     return ret;
 };
@@ -62,48 +62,49 @@ const getBoundaryKeyframe = (keyframes) => {
  * @param {number} num 传入的 num
  * @param {Array.<number>} arr 待查找的数组
  *
- * @return {Array.<number>} 结果数组，第 0 个元素是 num 前面的项，第 1 个元素是 num 后面的项
+ * @return {Array.<number>} 结果数组，第 0 个元素是 num 前面的项，第 1 个元素是 num 后面的项，第 2 个元素是前后两个索引的差值
  */
-const getAroundData = (num, arr) => {
+const getAroundData = (index, arr) => {
     let ret = [];
 
-    // 为找到 num 前面最临近的项而设置的差值最小值
+    // 为找到 index 前面最临近的项而设置的差值最小值
     let edgeForLess = {
         ret: -1,
         val: Number.MAX_VALUE
     };
 
-    // 为找到 num 后面最临近的项而设置的差值最小值
+    // 为找到 index 后面最临近的项而设置的差值最小值
     let edgeForMore = {
         ret: -1,
         val: Number.MAX_VALUE
     };
 
     // 不存在相等的情况，在调用 getAroundData 方法之前已经处理了相等的情况
-    arr.forEach((n) => {
-        // 小于的情况找的是 num 的前面最近邻的项
-        if (n < num) {
-            let sub = num - n;
+    for (let [i, n] of arr.entries()) {
+        // 小于的情况找的是 index 的前面最近邻的项
+        if (n < index) {
+            let sub = index - n;
             if (sub < edgeForLess.val) {
                 edgeForLess.val = sub;
                 edgeForLess.ret = n;
             }
         }
 
-        // 大于的情况找的是 num 的后面最近邻的项
-        if (n > num) {
-            let sub = n - num;
+        // 大于的情况找的是 index 的后面最近邻的项
+        if (n > index) {
+            let sub = n - index;
             if (sub < edgeForMore.val) {
                 edgeForMore.val = sub;
                 edgeForMore.ret = n;
             }
         }
-    });
+    }
 
-    debug(`当前传入的数据是 ${num}，紧邻他前面的索引是 ${edgeForLess.ret}，紧邻他后面的索引是 ${edgeForMore.ret}`);
+    debug(`当前传入的数据是 ${index}，紧邻他前面的索引是 ${edgeForLess.ret}，紧邻他后面的索引是 ${edgeForMore.ret}`);
 
     ret[0] = edgeForLess.ret;
     ret[1] = edgeForMore.ret;
+    ret[2] = ret[1] - ret[0];
 
     return ret;
 };
@@ -142,6 +143,7 @@ export default class Parser {
     getLayersByKeyframe(index) {
         const bData = this.boundaryData;
         const map = bData.keyframeMap;
+        const originalLayers = this.layers;
 
         // 如果传入的 index 在 keyframes 中的 index 正好存在，那么直接返回
         if (map[index]) {
@@ -166,15 +168,48 @@ export default class Parser {
 
         // 1. 找出 index 的前一关键帧和后一关键帧的 index
         const aroundIndex = getAroundData(index, bData.allKeyframeIndex);
-        console.warn(aroundIndex);
-        // 2. 根据 aroundIndex 以及 aroundIndex[0] 的 fx 计算出当前 index 对应的 layers 的值
+        // console.warn(aroundIndex, bData);
+        // console.warn(map[aroundIndex[0]], 'before');
+        // console.warn(map[aroundIndex[1]], 'after');
 
+        // 2. 根据 aroundIndex 以及 aroundIndex[0] 的 fx 计算出当前 index 对应的 layers 的值，最终要拿默认值做 merge，需要返回全值
+        // (后面的值 - 前面的值) / 差值
 
+        // 先找到 aroundIndex[0] 的 layers 里面有哪些 layer，看看这些 layer 在 aroundIndex[1] 的 layers 里是否存在
+        // 如果不存在，那么直接返回 aroundIndex[0] 的 layers 里的这个 layer 的值（和默认值 merge 后）
 
+        const beforeLayers = map[aroundIndex[0]];
+        const afterLayers = map[aroundIndex[1]];
 
+        let layerIdsInAfterLayers = {};
+        for (let afterLayer of afterLayers) {
+            layerIdsInAfterLayers[afterLayer.id] = afterLayer;
+        }
 
+        let ret = {
+            index: index,
+            layers: [],
+            // 先把结果缓存在 map 中，便于之后和 originalLayer merge
+            layersMap: {}
+        };
 
-        return this.boundaryData.keyframeMap[index];
+        for (let beforeLayer of beforeLayers) {
+            // 如果 afterLayer 中存在，但是 beforeLayer 中不存在，那么直接返回 beforeLayer 的数据
+            if (!layerIdsInAfterLayers[beforeLayer.id]) {
+                // ret.layers.push(beforeLayer);
+                ret.layersMap[beforeLayer.id] = beforeLayer;
+            }
+        }
+
+        for (let originalLayer of originalLayers) {
+            if (ret.layersMap[originalLayer.id]) {
+                ret.layers.push(extend(true, {}, originalLayer, ret.layersMap[originalLayer.id]))
+            }
+        }
+
+        console.warn(ret);
+
+        // return this.boundaryData.keyframeMap[index];
     }
 
     /**
@@ -206,117 +241,4 @@ export default class Parser {
         // console.warn(this.boundaryData);
     }
 
-
-
-
-
-
-    // 1. 传一个关键帧数，那么从这个帧数开始然后到最后
-    // 2. 传两个关键帧数，那么就取这两个帧数之间的
-    // 3. 没传关键帧数，那么从开始到最后
-    // start, end 指的是 data.keyframes 中每个 item 的 index 属性，而不是 data.keyframes 中每个 item 的索引
-    // parse(start = 0, end) {
-    //     // 这个方法里要做的事：
-    //     // 1. 找出 data.keyframes 中的最小 index 和最大 index
-    //     // 2. 根据传入的参数找到 和传入的参数最接近那一条关键帧的数据
-
-    //     // data.keyframes 中的最小索引
-    //     let minIndex = Number.MAX_VALUE;
-
-    //     // data.keyframes 中的最大索引
-    //     let maxIndex = Number.MIN_VALUE;
-
-    //     this.keyframes.forEach((keyframe) => {
-    //         let i = keyframe.index;
-    //         if (i <= minIndex) {
-    //             minIndex = i;
-    //         }
-
-    //         if (i >= maxIndex) {
-    //             maxIndex = i;
-    //         }
-    //     });
-
-    //     end = end ? end : maxIndex;
-
-    //     debug(`当前数据 data.keyframes 中，最大的索引为 ${maxIndex}，最小的索引为 ${minIndex}。`);
-    //     debug(`根据传入的 start、end 参数，当前应该计算的关键帧的范围是 ${start} 到 ${end} 之间。`);
-    //     // debug(`和传入的 start 相比较差值最小的那个关键帧是 index 为 ${sub4Start.retIndex} 的那个`);
-    //     // debug(`和传入的 end 相比较差值最小的那个关键帧是 index 为 ${sub4End.retIndex} 的那个`);
-    // }
-
-    // 1. 传一个关键帧数，那么从这个帧数开始然后到最后
-    // 2. 传两个关键帧数，那么就取这两个帧数之间的
-    // 3. 没传关键帧数，那么从开始到最后
-    // start, end 指的是 data.keyframes 中每个 item 的 index 属性，而不是 data.keyframes 中每个 item 的索引
-    /*parse(start = 0, end) {
-        // 这个方法里要做的事：
-        // 1. 找出 data.keyframes 中的最小 index 和最大 index
-        // 2. 根据传入的参数找到 和传入的参数最接近那一条关键帧的数据
-
-        // data.keyframes 中的最小索引
-        let minIndex = Number.MAX_VALUE;
-
-        // data.keyframes 中的最大索引
-        let maxIndex = Number.MIN_VALUE;
-
-        // 和传入的 start 相比较差值最小的那个 index 值，为之后获取 start 相关的的数据所用
-        let sub4Start = {
-            val: Number.MAX_VALUE,
-            retIndex: -1
-        };
-
-        // 和传入的 end 相比较差值最小的那个 index 值，为之后获取 end 相关的的数据所用
-        let sub4End = {
-            val: Number.MAX_VALUE,
-            retIndex: -1
-        };
-
-        this.keyframes.forEach((keyframe) => {
-            let i = keyframe.index;
-            if (i <= minIndex) {
-                minIndex = i;
-            }
-
-            let tmp = abs(i - start);
-            if (tmp <= sub4Start.val) {
-                sub4Start = {
-                    retIndex: i,
-                    val: tmp
-                };
-            }
-
-            if (i >= maxIndex) {
-                maxIndex = i;
-                if (!end) {
-                    if (end <= maxIndex) {
-                        end = maxIndex;
-                        let tmp1 = abs(i - end);
-                        if (tmp1 <= sub4End.val) {
-                            sub4End = {
-                                retIndex: i,
-                                val: tmp1
-                            };
-                        }
-                    }
-                }
-                else {
-                    let tmp1 = abs(i - end);
-                    if (tmp1 <= sub4End.val) {
-                        sub4End = {
-                            retIndex: i,
-                            val: tmp1
-                        };
-                    }
-                }
-
-
-            }
-        });
-
-        debug(`当前数据 data.keyframes 中，最大的索引为 ${maxIndex}，最小的索引为 ${minIndex}。`);
-        debug(`根据传入的 start、end 参数，当前应该计算的关键帧的范围是 ${start} 到 ${end} 之间。`);
-        debug(`和传入的 start 相比较差值最小的那个关键帧是 index 为 ${sub4Start.retIndex} 的那个`);
-        debug(`和传入的 end 相比较差值最小的那个关键帧是 index 为 ${sub4End.retIndex} 的那个`);
-    }*/
 }
