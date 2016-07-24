@@ -115,7 +115,6 @@ export default class Parser {
         this.keyframesLen = data.keyframes.length;
 
         this.boundaryData = getBoundaryKeyframe(this.keyframes);
-
     }
 
     /**
@@ -192,15 +191,22 @@ export default class Parser {
         };
 
         for (const beforeLayer of beforeLayers) {
+            let _afterLayer = layerIdsInAfterLayers[beforeLayer.id];
+
             // 如果 afterLayer 中存在，但是 beforeLayer 中不存在，那么直接返回 beforeLayer 的数据
-            if (!layerIdsInAfterLayers[beforeLayer.id]) {
+            if (!_afterLayer) {
                 ret.layersMap[beforeLayer.id] = beforeLayer;
             }
 
             // afterLayer 和 beforeLayer 中都存在，那么根据 beforeLayer 和 afterLayer 对应的属性以及 beforeLayer 属性的 fx 来计算
             else {
                 console.warn(beforeLayer);
-                console.warn(layerIdsInAfterLayers[beforeLayer.id]);
+                console.warn(_afterLayer);
+                for (let beforeProperty of Object.keys(beforeLayer)) {
+                    console.warn(beforeProperty, 111);
+                    console.warn(_afterLayer[beforeProperty]);
+                    console.warn(beforeLayer[beforeProperty]);
+                }
                 console.warn();
             }
         }
