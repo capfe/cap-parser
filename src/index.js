@@ -15,7 +15,7 @@ let parser = new Parser(mockData);
 
 // test
 // 0 - end
-parser.parse();
+// parser.parse();
 
 
 // 测试数据的关键帧索引为 2, 7, 12, 16
