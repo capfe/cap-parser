@@ -197,15 +197,44 @@ export default class Parser {
             if (!_afterLayer) {
                 ret.layersMap[beforeLayer.id] = beforeLayer;
             }
-
             // afterLayer 和 beforeLayer 中都存在，那么根据 beforeLayer 和 afterLayer 对应的属性以及 beforeLayer 属性的 fx 来计算
             else {
                 console.warn(beforeLayer);
                 console.warn(_afterLayer);
                 for (let beforeProperty of Object.keys(beforeLayer)) {
-                    console.warn(beforeProperty, 111);
-                    console.warn(_afterLayer[beforeProperty]);
-                    console.warn(beforeLayer[beforeProperty]);
+                    if (beforeProperty === 'id') {
+                        continue;
+                    }
+                    let before = beforeLayer[beforeProperty];
+                    let after = _afterLayer[beforeProperty];
+                    if (!before || !after) {
+                        continue;
+                    }
+
+                    let tmp = ret.layersMap[beforeLayer.id] = {};
+                    tmp[beforeProperty] = {};
+
+                    let step = index - aroundIndex[0];
+                    console.warn(aroundIndex);
+
+                    // 处理有 x y z 的属性
+                    ['x', 'y', 'z'].forEach((prop) => {
+                        if (before[prop] && after[prop]) {
+                            tmp[beforeProperty][prop] = {
+                                value: ((after[prop].value - before[prop].value) / aroundIndex[2])
+                                    * ((index - aroundIndex[0]) + before[prop].value),
+                                fx: 'linear'
+                            }
+                        }
+                    });
+
+                    console.warn(tmp);
+
+
+                    // console.warn(beforeProperty, 111);
+                    // console.warn(after);
+                    // console.warn(before);
+                    // console.warn(ret);
                 }
                 console.warn();
             }
@@ -219,7 +248,8 @@ export default class Parser {
             }
         }
 
-        console.warn(ret);
+        // console.warn(safeStringify(ret, null, 4));
+        // console.warn(ret);
 
         // return this.boundaryData.keyframeMap[index];
     }

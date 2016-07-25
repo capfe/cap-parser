@@ -29,7 +29,7 @@ parser.parse();
 // debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(4), null, 4)}`);
 // debug(`Parser Result: \n${safeStringify(parser.getLayersByKeyframe(7000), null, 4)}`);
 
-parser.getLayersByKeyframe(2);
+parser.getLayersByKeyframe(3);
 // parser.getLayersByKeyframe(3);
 
 // parser.getLayersByKeyframe(5);
