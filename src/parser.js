@@ -227,16 +227,7 @@ export default class Parser {
                             }
                         }
                     });
-
-                    console.warn(tmp);
-
-
-                    // console.warn(beforeProperty, 111);
-                    // console.warn(after);
-                    // console.warn(before);
-                    // console.warn(ret);
                 }
-                console.warn();
             }
         }
 
@@ -250,8 +241,7 @@ export default class Parser {
 
         // console.warn(safeStringify(ret, null, 4));
         // console.warn(ret);
-
-        // return this.boundaryData.keyframeMap[index];
+        return ret;
     }
 
     /**
