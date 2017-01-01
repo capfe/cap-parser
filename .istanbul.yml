@@ -1,7 +1,0 @@
-instrumentation:
-  root: src
-  include-all-sources: true
-  verbose: true
-  excludes: ["**/parser/compiler/parser.js"]
-reporting:
-  dir: "coverage"
